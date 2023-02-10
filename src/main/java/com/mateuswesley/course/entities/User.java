@@ -1,11 +1,29 @@
 package com.mateuswesley.course.entities;
 
 import java.io.Serializable;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
+import jakarta.persistence.Id;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 
+/*
+
+Colocando anotacoes do JPA para instruir a forma
+como essa classe deve ser mapeada para uma entidade na base de dados
+
+user e uma palavra reservada do banco que estamos usando
+
+*/
+
+@Entity
+@Table(name = "tb_user")
 public class User implements Serializable{
 
     private static final long serialVersionUID = 1L;
-
+    // Incrementa o ID automaticamente
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
     private String email;
@@ -38,7 +56,7 @@ public class User implements Serializable{
     public void setName(String name) {
         this.name = name;
     }
-    
+
     public String getEmail() {
         return email;
     }
