@@ -1,9 +1,13 @@
 package com.mateuswesley.course.entities;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 
@@ -29,6 +33,12 @@ public class User implements Serializable{
     private String email;
     private String phone;
     private String password;
+
+    // Criando a associacao entre as entidades
+    // precisamos tambem sinalizar qual a variavel do outro lado
+    // que mapeia essa relacao
+    @OneToMany(mappedBy = "client")
+    private List<Order> orders = new ArrayList<>();
 
     public User() {
     }
@@ -63,6 +73,10 @@ public class User implements Serializable{
 
     public void setPhone(String phone) {
         this.phone = phone;
+    }
+
+    public List<Order> getOrders() {
+        return orders;
     }
 
     @Override
