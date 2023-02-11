@@ -30,6 +30,20 @@ public class Order implements Serializable{
     @JoinColumn(name = "client_id")
     private User client;
 
+    public Order(){
+
+    }
+
+    public Order(User client) {
+        this.moment = Instant.now();
+        this.client = client;
+    }
+
+    public Order(User client, Instant moment) {
+        this.moment = moment;
+        this.client = client;
+    }
+
     public Long getId() {
         return id;
     }
