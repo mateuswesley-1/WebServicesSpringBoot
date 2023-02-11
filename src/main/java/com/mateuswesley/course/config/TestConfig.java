@@ -10,10 +10,12 @@ import org.springframework.context.annotation.Profile;
 
 import com.mateuswesley.course.entities.Category;
 import com.mateuswesley.course.entities.Order;
+import com.mateuswesley.course.entities.Product;
 import com.mateuswesley.course.entities.User;
 import com.mateuswesley.course.entities.enums.OrderStatus;
 import com.mateuswesley.course.repositories.CategoryRepository;
 import com.mateuswesley.course.repositories.OrderRepository;
+import com.mateuswesley.course.repositories.ProductRepository;
 import com.mateuswesley.course.repositories.UserRepository;
 
 
@@ -34,6 +36,9 @@ public class TestConfig implements CommandLineRunner{
     @Autowired
     private CategoryRepository categoryRepository;
 
+    @Autowired
+    private ProductRepository productRepository;
+
     @Override
     public void run(String... args) throws Exception {
 
@@ -49,8 +54,12 @@ public class TestConfig implements CommandLineRunner{
         Category cat2 = new Category("Books");
         Category cat3 = new Category("Computers");
 
+        Product prod1 = new Product("notebook asus", "notebook irado ate dms", 2500.0, "http://google.com");
+        Product prod2 = new Product("ifome", "celular massa", 4500.0, "http://google.com");
+
         userRepository.saveAll(Arrays.asList(u1, u2));
         orderRepository.saveAll(Arrays.asList(o1, o2, o3, o4));
         categoryRepository.saveAll(Arrays.asList(cat1, cat2, cat3));
+        productRepository.saveAll(Arrays.asList(prod1, prod2));
     }
 }
