@@ -3,6 +3,8 @@ package com.mateuswesley.course.entities;
 import java.io.Serializable;
 import java.time.Instant;
 
+import com.mateuswesley.course.entities.enums.OrderStatus;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -21,7 +23,9 @@ public class Order implements Serializable{
     private Long id;
     private Instant moment;
 
+    private Integer orderStatus;
     /* Implementndo associacoes */
+
 
     /* Um cliente pode fazer varios pedidos, essa anotacao sinaliza
      * para o jpa que essa variavel sera uma chave estrangeira muitos para um
@@ -33,15 +37,27 @@ public class Order implements Serializable{
     public Order(){
 
     }
-
     public Order(User client) {
         this.moment = Instant.now();
+        this.orderStatus = OrderStatus.WAITING_PAYMENT.getCode();
         this.client = client;
     }
 
-    public Order(User client, Instant moment) {
+    public Order(User client, OrderStatus orderStatus) {
+        this(client);
+        setOrderStatus(orderStatus);
+    }
+
+    public Order(User client, Instant moment){
+        this(client);
         this.moment = moment;
-        this.client = client;
+    }
+
+
+
+    public Order(User client, Instant moment, OrderStatus orderStatus) {
+        this(client, moment);
+        this.orderStatus = orderStatus.getCode();;
     }
 
     public Long getId() {
@@ -67,6 +83,21 @@ public class Order implements Serializable{
     public void setClient(User client) {
         this.client = client;
     }
+
+    // Usamos numero inteiro para inicializar o OrderStatus
+    // E o get retorna o valor enum la
+    public OrderStatus getOrderStatus() {
+        return OrderStatus.valueOf(orderStatus);
+    }
+
+    //
+    public void setOrderStatus(OrderStatus orderStatus) {
+        if(orderStatus != null){
+            this.orderStatus = orderStatus.getCode();
+        }
+
+    }
+
 
     @Override
     public int hashCode() {

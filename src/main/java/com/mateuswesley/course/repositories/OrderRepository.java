@@ -7,6 +7,4 @@ import com.mateuswesley.course.entities.Order;
 // nao precisamos implementasr essa interface, pq a jpa ja implementa
 
 /* Não precisa de indicação @Repository pq herda do JpaResitory */
-public interface OrderRepository extends JpaRepository<Order, Long> {
-    /*A camada pega a requisição e pega os dados usando o Jpa */
-}
+public interface OrderRepository extends JpaRepository<Order, Long> {}
