@@ -2,6 +2,7 @@ package com.mateuswesley.course.entities.pk;
 
 import java.io.Serializable;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.mateuswesley.course.entities.Order;
 import com.mateuswesley.course.entities.Product;
 

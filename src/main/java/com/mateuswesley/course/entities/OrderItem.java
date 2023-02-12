@@ -2,6 +2,7 @@ package com.mateuswesley.course.entities;
 
 import java.io.Serializable;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.mateuswesley.course.entities.pk.OrderItemPk;
 
 import jakarta.persistence.EmbeddedId;
@@ -16,7 +17,7 @@ public class OrderItem implements Serializable{
 
     // indica que a classe OrderItemPk compoe a classe OrderItem
     @EmbeddedId
-    private OrderItemPk id;
+    private OrderItemPk id = new OrderItemPk();
 
     private Integer quantity;
     private Double price;
@@ -34,6 +35,7 @@ public class OrderItem implements Serializable{
         id.setProduct(product);
     }
 
+    @JsonIgnore
     public Order getOrder() {
         return id.getOrder();
     }
