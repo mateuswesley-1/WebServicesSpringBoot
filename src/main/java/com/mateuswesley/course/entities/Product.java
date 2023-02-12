@@ -4,12 +4,15 @@ import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.persistence.JoinColumn;
 
@@ -29,6 +32,12 @@ public class Product implements Serializable{
     @ManyToMany
     @JoinTable(name = "tb_prod_category", joinColumns = @JoinColumn(name = "product_id"), inverseJoinColumns = @JoinColumn(name = "category_id"))
     private Set<Category> categories = new HashSet<>();
+
+    // para cada produto, temos varios orders items,
+    // o mappedBy indica que o Product tbm estara presente na relacao
+    // do orderItems.
+    @OneToMany(mappedBy = "id.product")
+    private Set<OrderItem> orderItems = new HashSet<>();
 
 
     public Product(){}
@@ -75,6 +84,17 @@ public class Product implements Serializable{
     }
     public Set<Category> getCategories() {
         return categories;
+    }
+
+    // Fazemos com que o metodo get capture os pediso
+    // atraves da lista de orderItems, como indicado no
+    @JsonIgnore
+    public Set<Order> getOrders(){
+        Set<Order> set = new HashSet<>();
+        for(OrderItem item : orderItems){
+            set.add(item.getOrder());
+        }
+        return set;
     }
 
     @Override
