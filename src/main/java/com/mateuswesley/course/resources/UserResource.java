@@ -1,13 +1,17 @@
 package com.mateuswesley.course.resources;
 
+import java.net.URI;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.mateuswesley.course.entities.User;
 import com.mateuswesley.course.services.UserService;
@@ -52,4 +56,19 @@ public class UserResource {
         User obj = service.findById(id);
         return ResponseEntity.ok().body(obj);
     }
+
+
+    // agora estamos criando um metodo que recebe uma requisicao do
+    // tipo Post.
+
+    //RequestBody indica que o objeto User chegara na forma de json
+    // e devera ser deserializado
+    @PostMapping
+    public ResponseEntity<User> insert(@RequestBody User user){
+         user = service.insert(user);
+         // para que seja dada a resposta padrao 201 para qnd objetos sao criados
+         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(user.getId()).toUri();
+         return ResponseEntity.created(uri).body(user);
+    }
+
 }
