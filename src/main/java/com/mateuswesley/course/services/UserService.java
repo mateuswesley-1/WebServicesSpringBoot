@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.mateuswesley.course.entities.User;
 import com.mateuswesley.course.repositories.UserRepository;
+import com.mateuswesley.course.services.exceptions.ResourceNotFoundException;
 
 // Registra essa classe como um componente (de serviço) que podera // ser usado para injeção de dependencias
 
@@ -27,10 +28,27 @@ public class UserService {
 
     public User findById(Long id){
         Optional<User> obj = repository.findById(id);
-        return obj.get();
+        return obj.orElseThrow(()-> new ResourceNotFoundException(id));
     }
 
     public User insert(User obj){
         return repository.save(obj);
+    }
+
+    public void delete(Long id){
+        repository.deleteById(id);
+    }
+
+    public User update(Long id, User user){
+        // Objeto monitorado ue ainda nao vai no bd
+        User entity = repository.getReferenceById(id);
+        updateData(entity, user);
+        return repository.save(entity);
+    }
+
+    public void updateData(User entity, User user){
+        entity.setEmail(user.getEmail());
+        entity.setName(user.getName());
+        entity.setPhone(user.getPhone());
     }
 }
