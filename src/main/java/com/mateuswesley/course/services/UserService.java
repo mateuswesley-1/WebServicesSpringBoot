@@ -13,6 +13,8 @@ import com.mateuswesley.course.repositories.UserRepository;
 import com.mateuswesley.course.services.exceptions.DataBaseException;
 import com.mateuswesley.course.services.exceptions.ResourceNotFoundException;
 
+import jakarta.persistence.EntityNotFoundException;
+
 // Registra essa classe como um componente (de serviço) que podera // ser usado para injeção de dependencias
 
 @Service
@@ -35,11 +37,13 @@ public class UserService {
     }
 
     public User insert(User obj){
+
         return repository.save(obj);
+
     }
 
     public void delete(Long id){
-        
+
         try{
 
             repository.deleteById(id);
@@ -48,7 +52,7 @@ public class UserService {
 
             throw new ResourceNotFoundException(id);
 
-        } catch( DataIntegrityViolationException e){
+        } catch(DataIntegrityViolationException e){
 
             throw new DataBaseException(e.getMessage());
 
@@ -58,9 +62,18 @@ public class UserService {
 
     public User update(Long id, User user){
         // Objeto monitorado ue ainda nao vai no bd
-        User entity = repository.getReferenceById(id);
-        updateData(entity, user);
-        return repository.save(entity);
+        try{
+
+            User entity = repository.getReferenceById(id);
+            updateData(entity, user);
+            return repository.save(entity);
+
+        } catch(EntityNotFoundException e){
+
+            throw new ResourceNotFoundException(id);
+
+        }
+
     }
 
     public void updateData(User entity, User user){
