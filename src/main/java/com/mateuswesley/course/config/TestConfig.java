@@ -11,6 +11,7 @@ import org.springframework.context.annotation.Profile;
 import com.mateuswesley.course.entities.Category;
 import com.mateuswesley.course.entities.Order;
 import com.mateuswesley.course.entities.OrderItem;
+import com.mateuswesley.course.entities.Payment;
 import com.mateuswesley.course.entities.Product;
 import com.mateuswesley.course.entities.User;
 import com.mateuswesley.course.entities.enums.OrderStatus;
@@ -71,6 +72,8 @@ public class TestConfig implements CommandLineRunner{
         OrderItem oi3 = new OrderItem(o2, prod1, 2, prod1.getPrice());
         OrderItem oi4 = new OrderItem(o3, prod1, 2, prod1.getPrice());
 
+        Payment pay1 = new Payment(Instant.now(), o1);
+        o1.setPayment(pay1);
 
 
         userRepository.saveAll(Arrays.asList(u1, u2));

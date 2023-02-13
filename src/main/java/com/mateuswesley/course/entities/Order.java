@@ -5,8 +5,11 @@ import java.time.Instant;
 import java.util.HashSet;
 import java.util.Set;
 
+
+
 import com.mateuswesley.course.entities.enums.OrderStatus;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -14,6 +17,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
 @Entity
@@ -25,6 +29,12 @@ public class Order implements Serializable{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private Instant moment;
+
+    // estamos fazendo um mapeamento de forma que o pagamento tera o mesmo id
+    // de quem ele faz parte
+    @OneToOne(mappedBy = "order", cascade = CascadeType.ALL)
+    private Payment payment;
+
 
     private Integer orderStatus;
     /* Implementndo associacoes */
@@ -108,6 +118,16 @@ public class Order implements Serializable{
     public Set<OrderItem> getItems() {
         return items;
     }
+
+    public Payment getPayment() {
+        return payment;
+    }
+
+    public void setPayment(Payment payment) {
+        this.payment = payment;
+    }
+
+
 
 
     @Override
